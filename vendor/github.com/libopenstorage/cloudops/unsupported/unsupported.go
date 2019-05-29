@@ -19,6 +19,7 @@ func (u *unsupportedCompute) DeleteInstance(instanceID string) error {
 		Operation: "DeleteInstance",
 	}
 }
+
 func (u *unsupportedCompute) InstanceID() string {
 	return "Unsupported"
 }
