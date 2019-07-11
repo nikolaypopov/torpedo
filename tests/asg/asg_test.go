@@ -14,6 +14,7 @@ import (
 	"github.com/onsi/ginkgo/reporters"
 	. "github.com/onsi/gomega"
 	"github.com/portworx/torpedo/drivers/node"
+	"github.com/portworx/torpedo/drivers/scheduler"
 	. "github.com/portworx/torpedo/tests"
 
 	// https://github.com/kubernetes/client-go/issues/242
@@ -49,12 +50,11 @@ var _ = Describe("{ClusterScaleUpDown}", func() {
 
 		autoNodeRecoveryTimeoutMins, err := strconv.Atoi(autoNodeRecoveryTimeout)
 		Expect(err).NotTo(HaveOccurred())
-		/*
-			var contexts []*scheduler.Context
-			for i := 0; i < Inst().ScaleFactor; i++ {
-				contexts = append(contexts, ScheduleAndValidate(fmt.Sprintf("asgscaleupdown-%d", i))...)
-			}
-		*/
+
+		var contexts []*scheduler.Context
+		for i := 0; i < Inst().ScaleFactor; i++ {
+			contexts = append(contexts, ScheduleAndValidate(fmt.Sprintf("asgscaleupdown-%d", i))...)
+		}
 
 		intitialNodeCount, err := Inst().N.GetASGClusterSize()
 		Expect(err).NotTo(HaveOccurred())
@@ -92,11 +92,10 @@ var _ = Describe("{ClusterScaleUpDown}", func() {
 			})
 		})
 
-		/*
-			opts := make(map[string]bool)
-			opts[scheduler.OptionsWaitForResourceLeakCleanup] = true
-			ValidateAndDestroy(contexts, opts)
-		*/
+		opts := make(map[string]bool)
+		opts[scheduler.OptionsWaitForResourceLeakCleanup] = true
+		ValidateAndDestroy(contexts, opts)
+
 	})
 })
 
