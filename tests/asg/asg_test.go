@@ -24,6 +24,7 @@ import (
 const (
 	scaleTimeout                = 10 * time.Minute
 	autoNodeRecoveryTimeoutMins = 15 * time.Minute
+	nodeDeleteTimeoutMins       = 5 * time.Minute
 )
 
 func TestASG(t *testing.T) {
@@ -241,7 +242,7 @@ func KillANodeAndValidate(storageNodes []node.Node) {
 	nodeToKill := storageNodes[rand.Intn(len(storageNodes))]
 
 	Step(fmt.Sprintf("Deleting node [%v]", nodeToKill.Name), func() {
-		err := Inst().N.DeleteNode(nodeToKill)
+		err := Inst().N.DeleteNode(nodeToKill, nodeDeleteTimeoutMins)
 		Expect(err).NotTo(HaveOccurred())
 	})
 
